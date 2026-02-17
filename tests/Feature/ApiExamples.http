@@ -1,0 +1,547 @@
+### Examples of API requests for Leads and Statuses
+### Use with REST Client extension in VS Code or similar tool
+### All requests use JSON:API format (application/vnd.api+json)
+### Base URL: http://localhost/api/v1
+
+@baseUrl = http://localhost/api/v1
+@contentType = application/vnd.api+json
+
+### ============================================
+### LEADS API
+### ============================================
+
+### GET - List all leads
+GET {{baseUrl}}/leads
+Accept: {{contentType}}
+
+### GET - List leads with pagination
+GET {{baseUrl}}/leads?page[size]=10&page[number]=1
+Accept: {{contentType}}
+
+### GET - Filter leads by external_entity_id
+GET {{baseUrl}}/leads?filter[external_entity_id]=test-entity-123
+Accept: {{contentType}}
+
+### GET - Filter leads by external_project_id
+GET {{baseUrl}}/leads?filter[external_project_id]=proj-123
+Accept: {{contentType}}
+
+### GET - Filter leads by status
+GET {{baseUrl}}/leads?filter[status]=1
+Accept: {{contentType}}
+
+### GET - Filter leads by user_id
+GET {{baseUrl}}/leads?filter[user_id]=1
+Accept: {{contentType}}
+
+### GET - Filter leads by project_id
+GET {{baseUrl}}/leads?filter[project_id]=1
+Accept: {{contentType}}
+
+### GET - Filter leads by quiz_id
+GET {{baseUrl}}/leads?filter[quiz_id]=1
+Accept: {{contentType}}
+
+### GET - Sort leads by createdAt descending
+GET {{baseUrl}}/leads?sort=-createdAt
+Accept: {{contentType}}
+
+### GET - Sort leads by id ascending
+GET {{baseUrl}}/leads?sort=id
+Accept: {{contentType}}
+
+### GET - Sort leads by name
+GET {{baseUrl}}/leads?sort=name
+Accept: {{contentType}}
+
+### GET - Sort leads by externalSystem
+GET {{baseUrl}}/leads?sort=externalSystem
+Accept: {{contentType}}
+
+### GET - Sort leads by status
+GET {{baseUrl}}/leads?sort=status
+Accept: {{contentType}}
+
+### GET - Show specific lead
+GET {{baseUrl}}/leads/1
+Accept: {{contentType}}
+
+### POST - Create a new lead with minimal required fields
+POST {{baseUrl}}/leads
+Accept: {{contentType}}
+Content-Type: {{contentType}}
+
+{
+  "data": {
+    "type": "leads",
+    "attributes": {
+      "externalSystem": "example_system",
+      "externalEntity": "lead",
+      "externalEntityId": "ext-123456"
+    }
+  }
+}
+
+### POST - Create a new lead with all fields
+POST {{baseUrl}}/leads
+Accept: {{contentType}}
+Content-Type: {{contentType}}
+
+{
+  "data": {
+    "type": "leads",
+    "attributes": {
+      "name": "John Doe",
+      "email": "john.doe@example.com",
+      "phone": "+1234567890",
+      "externalId": "ext-john-doe",
+      "externalSystem": "example_system",
+      "externalEntity": "lead",
+      "externalEntityId": "ext-123456",
+      "externalProjectId": "proj-123",
+      "status": 1,
+      "ipAddress": "192.168.1.1",
+      "city": "Moscow",
+      "country": "Russia",
+      "utmSource": "google",
+      "utmMedium": "cpc",
+      "utmCampaign": "summer-sale",
+      "utmContent": "ad-1",
+      "utmTerm": "keyword",
+      "userId": 1,
+      "projectId": 1,
+      "quizId": 1,
+      "fingerprint": "fp-abc123",
+      "isTest": false,
+      "viewed": false,
+      "paid": false,
+      "blocked": false
+    }
+  }
+}
+
+### POST - Create lead with array fields (messengers, data, contacts)
+POST {{baseUrl}}/leads
+Accept: {{contentType}}
+Content-Type: {{contentType}}
+
+{
+  "data": {
+    "type": "leads",
+    "attributes": {
+      "name": "Array Test Lead",
+      "email": "array@example.com",
+      "externalSystem": "example_system",
+      "externalEntity": "lead",
+      "externalEntityId": "ext-array-123",
+      "messengers": {
+        "telegram": "@johndoe",
+        "whatsapp": "+1234567890"
+      },
+      "data": {
+        "answers2": [
+          {
+            "q": "What is your name?",
+            "a": "John Doe"
+          },
+          {
+            "q": "What is your email?",
+            "a": "john.doe@example.com"
+          }
+        ]
+      },
+      "contacts": {
+        "address": "123 Main St",
+        "company": "Test Company"
+      },
+      "integrationData": {
+        "integration_id": "12345",
+        "sync_status": "pending"
+      }
+    }
+  }
+}
+
+### POST - Create lead with test flag
+POST {{baseUrl}}/leads
+Accept: {{contentType}}
+Content-Type: {{contentType}}
+
+{
+  "data": {
+    "type": "leads",
+    "attributes": {
+      "name": "Test Lead",
+      "email": "test@example.com",
+      "externalSystem": "example_system",
+      "externalEntity": "lead",
+      "externalEntityId": "test-ext-123",
+      "isTest": true,
+      "status": 1
+    }
+  }
+}
+
+### POST - Create lead with location
+POST {{baseUrl}}/leads
+Accept: {{contentType}}
+Content-Type: {{contentType}}
+
+{
+  "data": {
+    "type": "leads",
+    "attributes": {
+      "name": "Moscow Lead",
+      "email": "moscow@example.com",
+      "externalSystem": "example_system",
+      "externalEntity": "lead",
+      "externalEntityId": "moscow-ext-123",
+      "ipAddress": "87.250.250.242",
+      "city": "Moscow",
+      "country": "Russia",
+      "status": 1
+    }
+  }
+}
+
+### POST - Create lead with UTM tags
+POST {{baseUrl}}/leads
+Accept: {{contentType}}
+Content-Type: {{contentType}}
+
+{
+  "data": {
+    "type": "leads",
+    "attributes": {
+      "name": "UTM Lead",
+      "email": "utm@example.com",
+      "externalSystem": "example_system",
+      "externalEntity": "lead",
+      "externalEntityId": "utm-ext-123",
+      "utmSource": "google",
+      "utmMedium": "cpc",
+      "utmCampaign": "summer-sale",
+      "utmContent": "ad-1",
+      "utmTerm": "keyword"
+    }
+  }
+}
+
+### POST - Create lead with integration fields
+POST {{baseUrl}}/leads
+Accept: {{contentType}}
+Content-Type: {{contentType}}
+
+{
+  "data": {
+    "type": "leads",
+    "attributes": {
+      "name": "Integration Test Lead",
+      "email": "integration@example.com",
+      "externalSystem": "example_system",
+      "externalEntity": "lead",
+      "externalEntityId": "integration-ext-123",
+      "integrationStatus": "pending",
+      "integrationData": {
+        "integration_id": "12345",
+        "sync_status": "pending"
+      }
+    }
+  }
+}
+
+### POST - Create lead with boolean fields
+POST {{baseUrl}}/leads
+Accept: {{contentType}}
+Content-Type: {{contentType}}
+
+{
+  "data": {
+    "type": "leads",
+    "attributes": {
+      "name": "Boolean Test Lead",
+      "email": "boolean@example.com",
+      "externalSystem": "example_system",
+      "externalEntity": "lead",
+      "externalEntityId": "boolean-ext-123",
+      "isTest": true,
+      "viewed": true,
+      "paid": true,
+      "blocked": false
+    }
+  }
+}
+
+### POST - Create lead with delay in meta (notification will be delayed)
+POST {{baseUrl}}/leads
+Accept: {{contentType}}
+Content-Type: {{contentType}}
+
+{
+  "data": {
+    "type": "leads",
+    "attributes": {
+      "name": "Delayed Notification Lead",
+      "email": "delayed@example.com",
+      "externalSystem": "example_system",
+      "externalEntity": "lead",
+      "externalEntityId": "delayed-ext-123"
+    },
+    "meta": {
+      "delaySec": 5
+    }
+  }
+}
+
+### PATCH - Update lead (use PATCH, not PUT for JSON:API)
+PATCH {{baseUrl}}/leads/1
+Accept: {{contentType}}
+Content-Type: {{contentType}}
+
+{
+  "data": {
+    "type": "leads",
+    "id": "1",
+    "attributes": {
+      "name": "Updated Name",
+      "email": "updated@example.com",
+      "status": 2,
+      "viewed": true,
+      "paid": true
+    }
+  }
+}
+
+### PATCH - Update lead status
+PATCH {{baseUrl}}/leads/1
+Accept: {{contentType}}
+Content-Type: {{contentType}}
+
+{
+  "data": {
+    "type": "leads",
+    "id": "1",
+    "attributes": {
+      "status": 3
+    }
+  }
+}
+
+### DELETE - Delete lead (soft delete)
+DELETE {{baseUrl}}/leads/1
+Accept: {{contentType}}
+
+### ============================================
+### STATUSES API
+### ============================================
+
+### GET - List all statuses
+GET {{baseUrl}}/statuses
+Accept: {{contentType}}
+
+### GET - List statuses with pagination
+GET {{baseUrl}}/statuses?page[size]=10&page[number]=1
+Accept: {{contentType}}
+
+### GET - Filter statuses by external_entity_id
+GET {{baseUrl}}/statuses?filter[external_entity_id]=test-entity-123
+Accept: {{contentType}}
+
+### GET - Filter statuses by status_id
+GET {{baseUrl}}/statuses?filter[status_id]=1
+Accept: {{contentType}}
+
+### GET - Filter statuses by user_id
+GET {{baseUrl}}/statuses?filter[user_id]=1
+Accept: {{contentType}}
+
+### GET - Filter statuses by project_id
+GET {{baseUrl}}/statuses?filter[project_id]=1
+Accept: {{contentType}}
+
+### GET - Sort statuses by order
+GET {{baseUrl}}/statuses?sort=order
+Accept: {{contentType}}
+
+### GET - Sort statuses by name
+GET {{baseUrl}}/statuses?sort=name
+Accept: {{contentType}}
+
+### GET - Sort statuses by createdAt
+GET {{baseUrl}}/statuses?sort=createdAt
+Accept: {{contentType}}
+
+### GET - Sort statuses by createdAt descending
+GET {{baseUrl}}/statuses?sort=-createdAt
+Accept: {{contentType}}
+
+### GET - Show specific status
+GET {{baseUrl}}/statuses/1
+Accept: {{contentType}}
+
+### POST - Create a new status
+POST {{baseUrl}}/statuses
+Accept: {{contentType}}
+Content-Type: {{contentType}}
+
+{
+  "data": {
+    "type": "statuses",
+    "attributes": {
+      "name": "Новый",
+      "code": "new",
+      "color": "#4CAF50",
+      "order": 0,
+      "isDefault": false
+    }
+  }
+}
+
+### POST - Create status with custom label and color
+POST {{baseUrl}}/statuses
+Accept: {{contentType}}
+Content-Type: {{contentType}}
+
+{
+  "data": {
+    "type": "statuses",
+    "attributes": {
+      "name": "В работе",
+      "code": "in-progress",
+      "color": "#2196F3",
+      "order": 1,
+      "isDefault": false
+    }
+  }
+}
+
+### POST - Create status with userId and projectId
+POST {{baseUrl}}/statuses
+Accept: {{contentType}}
+Content-Type: {{contentType}}
+
+{
+  "data": {
+    "type": "statuses",
+    "attributes": {
+      "name": "Завершен",
+      "code": "completed",
+      "color": "#FF9800",
+      "order": 2,
+      "userId": 1,
+      "projectId": 1,
+      "isDefault": true
+    }
+  }
+}
+
+### PATCH - Update status (use PATCH, not PUT for JSON:API)
+PATCH {{baseUrl}}/statuses/1
+Accept: {{contentType}}
+Content-Type: {{contentType}}
+
+{
+  "data": {
+    "type": "statuses",
+    "id": "1",
+    "attributes": {
+      "name": "Обновленный статус",
+      "color": "#FF9800"
+    }
+  }
+}
+
+### PATCH - Update status order
+PATCH {{baseUrl}}/statuses/1
+Accept: {{contentType}}
+Content-Type: {{contentType}}
+
+{
+  "data": {
+    "type": "statuses",
+    "id": "1",
+    "attributes": {
+      "order": 5
+    }
+  }
+}
+
+### DELETE - Delete status
+DELETE {{baseUrl}}/statuses/1
+Accept: {{contentType}}
+
+### ============================================
+### ERROR EXAMPLES
+### ============================================
+
+### POST - Create lead with missing required fields (should return 422)
+POST {{baseUrl}}/leads
+Accept: {{contentType}}
+Content-Type: {{contentType}}
+
+{
+  "data": {
+    "type": "leads",
+    "attributes": {
+      "name": "Test Lead"
+    }
+  }
+}
+
+### POST - Create lead with invalid email (should return 422)
+POST {{baseUrl}}/leads
+Accept: {{contentType}}
+Content-Type: {{contentType}}
+
+{
+  "data": {
+    "type": "leads",
+    "attributes": {
+      "email": "invalid-email",
+      "externalSystem": "example_system",
+      "externalEntity": "lead",
+      "externalEntityId": "ext-123"
+    }
+  }
+}
+
+### POST - Create status with missing required fields (should return 422)
+POST {{baseUrl}}/statuses
+Accept: {{contentType}}
+Content-Type: {{contentType}}
+
+{
+  "data": {
+    "type": "statuses",
+    "attributes": {
+      "color": "#FF0000"
+    }
+  }
+}
+
+### GET - Get non-existent lead (should return 404)
+GET {{baseUrl}}/leads/99999
+Accept: {{contentType}}
+
+### GET - Get non-existent status (should return 404)
+GET {{baseUrl}}/statuses/99999
+Accept: {{contentType}}
+
+### PATCH - Update non-existent lead (should return 404)
+PATCH {{baseUrl}}/leads/99999
+Accept: {{contentType}}
+Content-Type: {{contentType}}
+
+{
+  "data": {
+    "type": "leads",
+    "id": "99999",
+    "attributes": {
+      "name": "Updated"
+    }
+  }
+}
+
+### DELETE - Delete non-existent lead (should return 404)
+DELETE {{baseUrl}}/leads/99999
+Accept: {{contentType}}

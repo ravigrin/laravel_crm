@@ -1,0 +1,980 @@
+### API Contracts Test File
+### Tests for V1 and V2 API endpoints as defined in API_CONTRACTS.md
+### Use with REST Client extension in VS Code or similar tool
+### Base URLs:
+###   V1 API: https://api.example.com/v1/answers
+###   V2 API: https://api.example.com/v2
+
+@v1BaseUrl = http://localhost/v1/answers
+@v2BaseUrl = http://localhost/v1
+@contentType = application/json
+@authToken = PLACEHOLDER_TOKEN
+
+### ============================================
+### AUTHENTICATION
+### ============================================
+### All endpoints require JWT token in Authorization header
+### Authorization: Bearer <jwt_token>
+
+### ============================================
+### V1 API ENDPOINTS
+### ============================================
+
+### POST /v1/answers/getLeads
+### Get leads with filtering and pagination
+POST {{v1BaseUrl}}/getLeads
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "archived": false,
+  "own": false,
+  "userId": null,
+  "filters": {
+    "interval": {
+      "startDate": "2023-01-01T00:00:00.000Z",
+      "endDate": "2023-12-31T23:59:59.999Z"
+    },
+    "locations": ["Москва", "Санкт-Петербург"],
+    "status": "new",
+    "quizzes": ["507f1f77bcf86cd799439011"],
+    "paid": true,
+    "stage": null,
+    "user": null
+  },
+  "sort": {
+    "created": -1
+  },
+  "skip": 0,
+  "limit": 15
+}
+
+### POST /v1/answers/getLeads - Minimal request
+POST {{v1BaseUrl}}/getLeads
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "archived": false,
+  "own": false,
+  "skip": 0,
+  "limit": 15
+}
+
+### POST /v1/answers/getLeads - Filter by status
+POST {{v1BaseUrl}}/getLeads
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "filters": {
+    "status": "verified"
+  },
+  "skip": 0,
+  "limit": 10
+}
+
+### POST /v1/answers/getLeads - Filter by locations
+POST {{v1BaseUrl}}/getLeads
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "filters": {
+    "locations": ["Москва"]
+  },
+  "skip": 0,
+  "limit": 10
+}
+
+### POST /v1/answers/getLeads - Filter by date interval
+POST {{v1BaseUrl}}/getLeads
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "filters": {
+    "interval": {
+      "startDate": "2024-01-01T00:00:00.000Z",
+      "endDate": "2024-12-31T23:59:59.999Z"
+    }
+  },
+  "skip": 0,
+  "limit": 10
+}
+
+### POST /v1/answers/getLeads - Filter by paid status
+POST {{v1BaseUrl}}/getLeads
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "filters": {
+    "paid": true
+  },
+  "skip": 0,
+  "limit": 10
+}
+
+### POST /v1/answers/getLeads - Filter by quizzes
+POST {{v1BaseUrl}}/getLeads
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "filters": {
+    "quizzes": ["507f1f77bcf86cd799439011", "507f1f77bcf86cd799439012"]
+  },
+  "skip": 0,
+  "limit": 10
+}
+
+### POST /v1/answers/getLeads - Filter by stage
+POST {{v1BaseUrl}}/getLeads
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "filters": {
+    "stage": "initial"
+  },
+  "skip": 0,
+  "limit": 10
+}
+
+### POST /v1/answers/getLeads - Filter by user
+POST {{v1BaseUrl}}/getLeads
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "filters": {
+    "user": "user-123"
+  },
+  "skip": 0,
+  "limit": 10
+}
+
+### POST /v1/answers/getLeads - Own leads only
+POST {{v1BaseUrl}}/getLeads
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "own": true,
+  "skip": 0,
+  "limit": 10
+}
+
+### POST /v1/answers/getLeads - Include archived
+POST {{v1BaseUrl}}/getLeads
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "archived": true,
+  "skip": 0,
+  "limit": 10
+}
+
+### POST /v1/answers/getLeads - Pagination
+POST {{v1BaseUrl}}/getLeads
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "skip": 30,
+  "limit": 20
+}
+
+### POST /v1/answers/getLeads - Sort ascending
+POST {{v1BaseUrl}}/getLeads
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "sort": {
+    "created": 1
+  },
+  "skip": 0,
+  "limit": 10
+}
+
+### POST /v1/answers/getLeadsCounters
+### Get lead statistics and counters
+POST {{v1BaseUrl}}/getLeadsCounters
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "archived": false,
+  "own": false,
+  "userId": null,
+  "filters": {
+    "interval": {
+      "startDate": "2023-01-01T00:00:00.000Z",
+      "endDate": "2023-12-31T23:59:59.999Z"
+    },
+    "locations": ["Москва"],
+    "status": "new",
+    "quizzes": ["507f1f77bcf86cd799439011"],
+    "paid": true,
+    "stage": null,
+    "user": null
+  },
+  "counters": [
+    "status",
+    "quizzes",
+    "locations",
+    "stages",
+    "paid",
+    "unpaid",
+    "new",
+    "updated",
+    "all",
+    "allFiltered",
+    "quizzesWithUnpaidLeads",
+    "quizzesCount"
+  ]
+}
+
+### POST /v1/answers/getLeadsCounters - Minimal request
+POST {{v1BaseUrl}}/getLeadsCounters
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "counters": ["all", "new"]
+}
+
+### POST /v1/answers/getLeadsCounters - Status counters only
+POST {{v1BaseUrl}}/getLeadsCounters
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "counters": ["status"]
+}
+
+### POST /v1/answers/getLeadsCounters - Quizzes counters
+POST {{v1BaseUrl}}/getLeadsCounters
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "counters": ["quizzes", "quizzesCount", "quizzesWithUnpaidLeads"]
+}
+
+### POST /v1/answers/getLeadsCounters - Locations counters
+POST {{v1BaseUrl}}/getLeadsCounters
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "counters": ["locations"]
+}
+
+### POST /v1/answers/getLeadsCounters - Stages counters
+POST {{v1BaseUrl}}/getLeadsCounters
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "counters": ["stages"]
+}
+
+### POST /v1/answers/getLeadsCounters - Paid/Unpaid counters
+POST {{v1BaseUrl}}/getLeadsCounters
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "counters": ["paid", "unpaid"]
+}
+
+### PATCH /v1/answers/updateLeads
+### Mass update leads
+PATCH {{v1BaseUrl}}/updateLeads
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "updates": [
+    {
+      "id": "lead-id-1",
+      "update": {
+        "comment": "Updated comment",
+        "stage": "contacted",
+        "viewed": "2023-01-01T00:00:00.000Z"
+      }
+    },
+    {
+      "id": "lead-id-2",
+      "update": {
+        "comment": "Another comment",
+        "stage": "qualified"
+      }
+    }
+  ]
+}
+
+### PATCH /v1/answers/updateLeads - Single lead update
+PATCH {{v1BaseUrl}}/updateLeads
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "updates": [
+    {
+      "id": "lead-id-1",
+      "update": {
+        "comment": "Single update"
+      }
+    }
+  ]
+}
+
+### PATCH /v1/answers/updateLeads - Update comment only
+PATCH {{v1BaseUrl}}/updateLeads
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "updates": [
+    {
+      "id": "lead-id-1",
+      "update": {
+        "comment": "New comment"
+      }
+    }
+  ]
+}
+
+### PATCH /v1/answers/updateLeads - Update stage only
+PATCH {{v1BaseUrl}}/updateLeads
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "updates": [
+    {
+      "id": "lead-id-1",
+      "update": {
+        "stage": "closed"
+      }
+    }
+  ]
+}
+
+### PATCH /v1/answers/updateLeads - Update viewed timestamp
+PATCH {{v1BaseUrl}}/updateLeads
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "updates": [
+    {
+      "id": "lead-id-1",
+      "update": {
+        "viewed": "2023-01-01T00:00:00.000Z"
+      }
+    }
+  ]
+}
+
+### POST /v1/answers/resend
+### Resend lead to integrations
+POST {{v1BaseUrl}}/resend
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "answerId": "lead-id-1"
+}
+
+### ============================================
+### V2 API ENDPOINTS
+### ============================================
+
+### GET /v2/leads
+### Get leads with enhanced filtering and modern pagination
+GET {{v2BaseUrl}}/leads
+Authorization: Bearer {{authToken}}
+Accept: {{contentType}}
+
+### GET /v2/leads - With pagination
+GET {{v2BaseUrl}}/leads?pagination[page]=1&pagination[perPage]=50
+Authorization: Bearer {{authToken}}
+Accept: {{contentType}}
+
+### GET /v2/leads - With sorting
+GET {{v2BaseUrl}}/leads?pagination[sort][field]=created_at&pagination[sort][order]=desc
+Authorization: Bearer {{authToken}}
+Accept: {{contentType}}
+
+### GET /v2/leads - Filter by status
+GET {{v2BaseUrl}}/leads?filters[status][]=new&filters[status][]=verified
+Authorization: Bearer {{authToken}}
+Accept: {{contentType}}
+
+### GET /v2/leads - Filter by locations
+GET {{v2BaseUrl}}/leads?filters[locations][]=Москва&filters[locations][]=Санкт-Петербург
+Authorization: Bearer {{authToken}}
+Accept: {{contentType}}
+
+### GET /v2/leads - Filter by quizzes
+GET {{v2BaseUrl}}/leads?filters[quizzes][]=507f1f77bcf86cd799439011&filters[quizzes][]=507f1f77bcf86cd799439012
+Authorization: Bearer {{authToken}}
+Accept: {{contentType}}
+
+### GET /v2/leads - Filter by paid status
+GET {{v2BaseUrl}}/leads?filters[paid]=true
+Authorization: Bearer {{authToken}}
+Accept: {{contentType}}
+
+### GET /v2/leads - Filter by stage
+GET {{v2BaseUrl}}/leads?filters[stage]=initial
+Authorization: Bearer {{authToken}}
+Accept: {{contentType}}
+
+### GET /v2/leads - Filter by user
+GET {{v2BaseUrl}}/leads?filters[user]=user-123
+Authorization: Bearer {{authToken}}
+Accept: {{contentType}}
+
+### GET /v2/leads - Filter by tags
+GET {{v2BaseUrl}}/leads?filters[tags][]=vip&filters[tags][]=priority
+Authorization: Bearer {{authToken}}
+Accept: {{contentType}}
+
+### GET /v2/leads - Filter by integration status
+GET {{v2BaseUrl}}/leads?filters[integrations][status]=sent
+Authorization: Bearer {{authToken}}
+Accept: {{contentType}}
+
+### GET /v2/leads - Filter by integration type
+GET {{v2BaseUrl}}/leads?filters[integrations][type]=email
+Authorization: Bearer {{authToken}}
+Accept: {{contentType}}
+
+### GET /v2/leads - Filter by date range (created)
+GET {{v2BaseUrl}}/leads?filters[range][created][gte]=2023-01-01T00:00:00.000Z&filters[range][created][lte]=2023-12-31T23:59:59.999Z
+Authorization: Bearer {{authToken}}
+Accept: {{contentType}}
+
+### GET /v2/leads - Filter by date range (updated)
+GET {{v2BaseUrl}}/leads?filters[range][updated][gte]=2023-01-01T00:00:00.000Z&filters[range][updated][lte]=2023-12-31T23:59:59.999Z
+Authorization: Bearer {{authToken}}
+Accept: {{contentType}}
+
+### GET /v2/leads - Text search
+GET {{v2BaseUrl}}/leads?filters[query]=John+Doe
+Authorization: Bearer {{authToken}}
+Accept: {{contentType}}
+
+### GET /v2/leads - Location filter with coordinates
+GET {{v2BaseUrl}}/leads?filters[location][city]=Москва&filters[location][coordinates][lat]=55.7558&filters[location][coordinates][lng]=37.6173&filters[location][radius]=10
+Authorization: Bearer {{authToken}}
+Accept: {{contentType}}
+
+### GET /v2/leads - Own leads only
+GET {{v2BaseUrl}}/leads?own=true
+Authorization: Bearer {{authToken}}
+Accept: {{contentType}}
+
+### GET /v2/leads - Include archived
+GET {{v2BaseUrl}}/leads?archived=true
+Authorization: Bearer {{authToken}}
+Accept: {{contentType}}
+
+### GET /v2/leads - With user ID (admin only)
+GET {{v2BaseUrl}}/leads?userId=user-123
+Authorization: Bearer {{authToken}}
+Accept: {{contentType}}
+
+### GET /v2/leads - Complex filter combination
+GET {{v2BaseUrl}}/leads?filters[status][]=new&filters[status][]=verified&filters[locations][]=Москва&filters[paid]=true&pagination[page]=1&pagination[perPage]=20&pagination[sort][field]=created_at&pagination[sort][order]=desc
+Authorization: Bearer {{authToken}}
+Accept: {{contentType}}
+
+### GET /v2/leads/count
+### Get lead statistics and counters
+GET {{v2BaseUrl}}/leads/count?counters[]=status&counters[]=quizzes&counters[]=locations
+Authorization: Bearer {{authToken}}
+Accept: {{contentType}}
+
+### GET /v2/leads/count - All counters
+GET {{v2BaseUrl}}/leads/count?counters[]=status&counters[]=quizzes&counters[]=locations&counters[]=stages&counters[]=paid&counters[]=unpaid&counters[]=new&counters[]=updated&counters[]=all&counters[]=allFiltered&counters[]=quizzesWithUnpaidLeads&counters[]=quizzesCount&counters[]=tags&counters[]=integrations
+Authorization: Bearer {{authToken}}
+Accept: {{contentType}}
+
+### GET /v2/leads/count - With filters
+GET {{v2BaseUrl}}/leads/count?filters[status][]=new&filters[locations][]=Москва&counters[]=status&counters[]=locations
+Authorization: Bearer {{authToken}}
+Accept: {{contentType}}
+
+### GET /v2/leads/count - Status counters only
+GET {{v2BaseUrl}}/leads/count?counters[]=status
+Authorization: Bearer {{authToken}}
+Accept: {{contentType}}
+
+### GET /v2/leads/count - Tags counters
+GET {{v2BaseUrl}}/leads/count?counters[]=tags
+Authorization: Bearer {{authToken}}
+Accept: {{contentType}}
+
+### GET /v2/leads/count - Integrations counters
+GET {{v2BaseUrl}}/leads/count?counters[]=integrations
+Authorization: Bearer {{authToken}}
+Accept: {{contentType}}
+
+### PATCH /v2/leads
+### Mass update leads with enhanced features
+PATCH {{v2BaseUrl}}/leads
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "updates": [
+    {
+      "id": "lead-id-1",
+      "update": {
+        "comment": "Updated comment",
+        "stage": "contacted",
+        "viewed": "2023-01-01T00:00:00.000Z",
+        "status": "verified",
+        "tags": ["vip", "priority"],
+        "metadata": {
+          "lastUpdatedBy": "user-123",
+          "updatedAt": "2023-01-01T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "id": "lead-id-2",
+      "update": {
+        "comment": "Another comment",
+        "stage": "qualified",
+        "status": "new"
+      }
+    }
+  ],
+  "batch": {
+    "transactional": true,
+    "onError": "continue",
+    "notifyOnCompletion": true
+  }
+}
+
+### PATCH /v2/leads - Minimal request
+PATCH {{v2BaseUrl}}/leads
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "updates": [
+    {
+      "id": "lead-id-1",
+      "update": {
+        "comment": "Simple update"
+      }
+    }
+  ]
+}
+
+### PATCH /v2/leads - Update with tags
+PATCH {{v2BaseUrl}}/leads
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "updates": [
+    {
+      "id": "lead-id-1",
+      "update": {
+        "tags": ["vip", "priority", "hot"]
+      }
+    }
+  ]
+}
+
+### PATCH /v2/leads - Update with status
+PATCH {{v2BaseUrl}}/leads
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "updates": [
+    {
+      "id": "lead-id-1",
+      "update": {
+        "status": "verified"
+      }
+    }
+  ]
+}
+
+### PATCH /v2/leads - Update with metadata
+PATCH {{v2BaseUrl}}/leads
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "updates": [
+    {
+      "id": "lead-id-1",
+      "update": {
+        "metadata": {
+          "lastUpdatedBy": "user-123"
+        }
+      }
+    }
+  ]
+}
+
+### PATCH /v2/leads - Batch with transactional mode
+PATCH {{v2BaseUrl}}/leads
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "updates": [
+    {
+      "id": "lead-id-1",
+      "update": {
+        "comment": "Transactional update"
+      }
+    }
+  ],
+  "batch": {
+    "transactional": true,
+    "onError": "stop",
+    "notifyOnCompletion": false
+  }
+}
+
+### PATCH /v2/leads - Batch with continue on error
+PATCH {{v2BaseUrl}}/leads
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "updates": [
+    {
+      "id": "lead-id-1",
+      "update": {
+        "comment": "Update 1"
+      }
+    },
+    {
+      "id": "lead-id-2",
+      "update": {
+        "comment": "Update 2"
+      }
+    }
+  ],
+  "batch": {
+    "transactional": false,
+    "onError": "continue",
+    "notifyOnCompletion": true
+  }
+}
+
+### POST /v2/leads/resend
+### Resend leads to integrations with enhanced options
+POST {{v2BaseUrl}}/leads/resend
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "leadIds": ["lead-id-1", "lead-id-2", "lead-id-3"],
+  "integrations": ["email", "amocrm", "telegram"],
+  "options": {
+    "force": false,
+    "notifyOnCompletion": true,
+    "priority": "normal"
+  }
+}
+
+### POST /v2/leads/resend - Minimal request
+POST {{v2BaseUrl}}/leads/resend
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "leadIds": ["lead-id-1"]
+}
+
+### POST /v2/leads/resend - Single lead
+POST {{v2BaseUrl}}/leads/resend
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "leadIds": ["lead-id-1"],
+  "integrations": ["email"]
+}
+
+### POST /v2/leads/resend - Multiple integrations
+POST {{v2BaseUrl}}/leads/resend
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "leadIds": ["lead-id-1"],
+  "integrations": ["email", "amocrm", "telegram", "webhook"]
+}
+
+### POST /v2/leads/resend - With force option
+POST {{v2BaseUrl}}/leads/resend
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "leadIds": ["lead-id-1"],
+  "options": {
+    "force": true,
+    "notifyOnCompletion": false,
+    "priority": "high"
+  }
+}
+
+### POST /v2/leads/resend - High priority
+POST {{v2BaseUrl}}/leads/resend
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "leadIds": ["lead-id-1", "lead-id-2"],
+  "options": {
+    "priority": "high",
+    "notifyOnCompletion": true
+  }
+}
+
+### GET /v2/leads/{id}
+### Get single lead by ID
+GET {{v2BaseUrl}}/leads/lead-id-1
+Authorization: Bearer {{authToken}}
+Accept: {{contentType}}
+
+### PATCH /v2/leads/{id}
+### Update single lead
+PATCH {{v2BaseUrl}}/leads/lead-id-1
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "comment": "Updated comment",
+  "stage": "contacted",
+  "viewed": "2023-01-01T00:00:00.000Z",
+  "status": "verified",
+  "tags": ["vip", "priority"],
+  "metadata": {
+    "lastUpdatedBy": "user-123"
+  }
+}
+
+### PATCH /v2/leads/{id} - Update comment only
+PATCH {{v2BaseUrl}}/leads/lead-id-1
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "comment": "New comment"
+}
+
+### PATCH /v2/leads/{id} - Update stage only
+PATCH {{v2BaseUrl}}/leads/lead-id-1
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "stage": "qualified"
+}
+
+### PATCH /v2/leads/{id} - Update status only
+PATCH {{v2BaseUrl}}/leads/lead-id-1
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "status": "verified"
+}
+
+### PATCH /v2/leads/{id} - Update tags only
+PATCH {{v2BaseUrl}}/leads/lead-id-1
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "tags": ["vip", "hot"]
+}
+
+### PATCH /v2/leads/{id} - Update metadata only
+PATCH {{v2BaseUrl}}/leads/lead-id-1
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "metadata": {
+    "lastUpdatedBy": "user-123"
+  }
+}
+
+### ============================================
+### ERROR TESTING
+### ============================================
+
+### POST /v1/answers/getLeads - Missing required fields (should return 400/422)
+POST {{v1BaseUrl}}/getLeads
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{}
+
+### POST /v1/answers/getLeads - Invalid date format (should return 400/422)
+POST {{v1BaseUrl}}/getLeads
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "filters": {
+    "interval": {
+      "startDate": "invalid-date",
+      "endDate": "invalid-date"
+    }
+  },
+  "skip": 0,
+  "limit": 10
+}
+
+### POST /v1/answers/getLeadsCounters - Missing counters array (should return 400/422)
+POST {{v1BaseUrl}}/getLeadsCounters
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "filters": {}
+}
+
+### PATCH /v1/answers/updateLeads - Empty updates array (should return 400/422)
+PATCH {{v1BaseUrl}}/updateLeads
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "updates": []
+}
+
+### PATCH /v1/answers/updateLeads - Missing lead ID (should return 400/422)
+PATCH {{v1BaseUrl}}/updateLeads
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "updates": [
+    {
+      "update": {
+        "comment": "Missing ID"
+      }
+    }
+  ]
+}
+
+### POST /v1/answers/resend - Missing answerId (should return 400/422)
+POST {{v1BaseUrl}}/resend
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{}
+
+### GET /v2/leads/{id} - Non-existent lead (should return 404)
+GET {{v2BaseUrl}}/leads/non-existent-id-99999
+Authorization: Bearer {{authToken}}
+Accept: {{contentType}}
+
+### PATCH /v2/leads/{id} - Non-existent lead (should return 404)
+PATCH {{v2BaseUrl}}/leads/non-existent-id-99999
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "comment": "Update non-existent"
+}
+
+### GET /v2/leads - Invalid pagination (should return 400/422)
+GET {{v2BaseUrl}}/leads?pagination[page]=-1&pagination[perPage]=0
+Authorization: Bearer {{authToken}}
+Accept: {{contentType}}
+
+### GET /v2/leads - Invalid sort order (should return 400/422)
+GET {{v2BaseUrl}}/leads?pagination[sort][order]=invalid
+Authorization: Bearer {{authToken}}
+Accept: {{contentType}}
+
+### PATCH /v2/leads - Empty updates array (should return 400/422)
+PATCH {{v2BaseUrl}}/leads
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "updates": []
+}
+
+### POST /v2/leads/resend - Empty leadIds array (should return 400/422)
+POST {{v2BaseUrl}}/leads/resend
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "leadIds": []
+}
+
+### ============================================
+### AUTHENTICATION TESTING
+### ============================================
+
+### GET /v2/leads - Missing Authorization header (should return 401)
+GET {{v2BaseUrl}}/leads
+Accept: {{contentType}}
+
+### GET /v2/leads - Invalid token (should return 401)
+GET {{v2BaseUrl}}/leads
+Authorization: Bearer invalid-token-12345
+Accept: {{contentType}}
+
+### POST /v1/answers/getLeads - Missing Authorization header (should return 401)
+POST {{v1BaseUrl}}/getLeads
+Content-Type: {{contentType}}
+
+{
+  "skip": 0,
+  "limit": 10
+}
+
+### ============================================
+### RATE LIMITING TESTING
+### ============================================
+### Note: These tests should check for X-RateLimit-* headers
+### V1 API: 100 requests per minute
+### V2 API: 200 requests per minute
+
+### GET /v2/leads - Check rate limit headers
+GET {{v2BaseUrl}}/leads
+Authorization: Bearer {{authToken}}
+Accept: {{contentType}}
+
+### POST /v1/answers/getLeads - Check rate limit headers
+POST {{v1BaseUrl}}/getLeads
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "skip": 0,
+  "limit": 10
+}
+
+
+
+

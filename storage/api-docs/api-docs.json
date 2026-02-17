@@ -1,0 +1,673 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Documentation",
+        "description": "API документация для системы управления лидами и интеграциями",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "{schema}://{host}",
+            "description": "API Server",
+            "variables": {
+                "schema": {
+                    "enum": [
+                        "http",
+                        "https"
+                    ],
+                    "default": "http"
+                },
+                "host": {
+                    "default": "localhost"
+                }
+            }
+        }
+    ],
+    "paths": {
+        "/api/export/export": {
+            "get": {
+                "tags": [
+                    "Export"
+                ],
+                "summary": "Запуск экспорта данных",
+                "operationId": "a7f5ab9b6de5566a079bd13585947ef5",
+                "responses": {
+                    "200": {
+                        "description": "Экспорт запущен"
+                    },
+                    "400": {
+                        "description": "Ошибка валидации"
+                    }
+                }
+            }
+        },
+        "/api/export/download": {
+            "get": {
+                "tags": [
+                    "Export"
+                ],
+                "summary": "Скачивание экспортированного файла",
+                "operationId": "0e9011f979ac8d71e9f875e9aec7b58e",
+                "responses": {
+                    "200": {
+                        "description": "Успешная загрузка файла"
+                    },
+                    "404": {
+                        "description": "Файл не найден"
+                    }
+                }
+            }
+        },
+        "/api/integrations/types": {
+            "get": {
+                "tags": [
+                    "Integrations"
+                ],
+                "summary": "Получение списка доступных типов интеграций",
+                "operationId": "2d2324da4fc9d14307d53f6decce3bcc",
+                "responses": {
+                    "200": {
+                        "description": "Успешное получение данных"
+                    }
+                }
+            }
+        },
+        "/api/integrations/test": {
+            "post": {
+                "tags": [
+                    "Integrations"
+                ],
+                "summary": "Тестирование подключения к интеграции",
+                "operationId": "890971d60f2e5a43600989823c4fa010",
+                "responses": {
+                    "200": {
+                        "description": "Успешное тестирование подключения"
+                    },
+                    "500": {
+                        "description": "Ошибка тестирования"
+                    }
+                }
+            }
+        },
+        "/api/integrations/send": {
+            "post": {
+                "tags": [
+                    "Integrations"
+                ],
+                "summary": "Отправка лида в интеграцию",
+                "operationId": "213f85237f854e80b87f88198a020119",
+                "responses": {
+                    "200": {
+                        "description": "Успешная отправка лида"
+                    },
+                    "404": {
+                        "description": "Лид не найден"
+                    },
+                    "500": {
+                        "description": "Ошибка отправки"
+                    }
+                }
+            }
+        },
+        "/api/integrations/update": {
+            "post": {
+                "tags": [
+                    "Integrations"
+                ],
+                "summary": "Обновление лида в интеграции",
+                "operationId": "ee9bc45c695afbc22a0e711e8007299d",
+                "responses": {
+                    "200": {
+                        "description": "Успешное обновление лида"
+                    },
+                    "404": {
+                        "description": "Лид не найден"
+                    },
+                    "500": {
+                        "description": "Ошибка обновления"
+                    }
+                }
+            }
+        },
+        "/api/integrations/{type}/config": {
+            "get": {
+                "tags": [
+                    "Integrations"
+                ],
+                "summary": "Получение конфигурации интеграции",
+                "operationId": "33fefc69db0d3865c6d672b2ebf1beab",
+                "parameters": [
+                    {
+                        "name": "type",
+                        "in": "path",
+                        "description": "Тип интеграции",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Успешное получение конфигурации"
+                    },
+                    "500": {
+                        "description": "Ошибка получения конфигурации"
+                    }
+                }
+            }
+        },
+        "/api/integrations/send-batch": {
+            "post": {
+                "tags": [
+                    "Integrations"
+                ],
+                "summary": "Отправка лида в несколько интеграций используя batch processing",
+                "operationId": "35e73699e2f87e0323fc1afdc60126fb",
+                "responses": {
+                    "200": {
+                        "description": "Успешная отправка batch"
+                    },
+                    "422": {
+                        "description": "Ошибка валидации"
+                    },
+                    "500": {
+                        "description": "Ошибка отправки"
+                    }
+                }
+            }
+        },
+        "/api/integrations/{type}/form-request": {
+            "get": {
+                "tags": [
+                    "Integrations"
+                ],
+                "summary": "Получение класса FormRequest для интеграции",
+                "operationId": "5354d5923085e8f7bed991681d0f38c2",
+                "parameters": [
+                    {
+                        "name": "type",
+                        "in": "path",
+                        "description": "Тип интеграции",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Успешное получение FormRequest класса"
+                    },
+                    "400": {
+                        "description": "Тип интеграции не найден"
+                    }
+                }
+            }
+        },
+        "/api/integrations/amocrm/authlink": {
+            "get": {
+                "tags": [
+                    "Integrations",
+                    "AmoCRM"
+                ],
+                "summary": "Получение ссылки авторизации AmoCRM",
+                "operationId": "3383acf15615c090ec7b7bee63b1c96d",
+                "responses": {
+                    "200": {
+                        "description": "Успешное получение ссылки"
+                    }
+                }
+            }
+        },
+        "/api/integrations/amocrm/savetoken": {
+            "get": {
+                "tags": [
+                    "Integrations",
+                    "AmoCRM"
+                ],
+                "summary": "Сохранение токена авторизации AmoCRM",
+                "operationId": "dc84bb95d4d1b89ca90e8b5506451f44",
+                "responses": {
+                    "200": {
+                        "description": "Успешное сохранение токена"
+                    }
+                }
+            }
+        },
+        "/api/integrations/amocrm/ownerdetails": {
+            "get": {
+                "tags": [
+                    "Integrations",
+                    "AmoCRM"
+                ],
+                "summary": "Получение информации о владельце AmoCRM",
+                "operationId": "0d841fca35928e0672d4bf7ffd850522",
+                "responses": {
+                    "200": {
+                        "description": "Успешное получение данных"
+                    }
+                }
+            }
+        },
+        "/api/integrations/{service}/credentials": {
+            "get": {
+                "tags": [
+                    "Integrations"
+                ],
+                "summary": "Получение учетных данных интеграции",
+                "operationId": "50c5ccbe3a857b3c0817475e00e29c9e",
+                "parameters": [
+                    {
+                        "name": "service",
+                        "in": "path",
+                        "description": "Тип сервиса интеграции",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Успешное получение данных"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Integrations"
+                ],
+                "summary": "Добавление учетных данных для интеграции",
+                "operationId": "049c4aaa38d9e2467aebce84f6c03ee5",
+                "parameters": [
+                    {
+                        "name": "service",
+                        "in": "path",
+                        "description": "Тип сервиса интеграции",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Успешное сохранение учетных данных"
+                    },
+                    "400": {
+                        "description": "Ошибка валидации"
+                    },
+                    "500": {
+                        "description": "Внутренняя ошибка сервера"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Integrations"
+                ],
+                "summary": "Удаление учетных данных интеграции",
+                "operationId": "a13b4da57be96b5c9ddbf05d9552ad57",
+                "parameters": [
+                    {
+                        "name": "service",
+                        "in": "path",
+                        "description": "Тип сервиса интеграции",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Успешное удаление"
+                    },
+                    "500": {
+                        "description": "Ошибка при удалении"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Integrations"
+                ],
+                "summary": "Обновление учетных данных интеграции",
+                "operationId": "34f195e290f87c06a03088f640685969",
+                "parameters": [
+                    {
+                        "name": "service",
+                        "in": "path",
+                        "description": "Тип сервиса интеграции",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Успешное обновление данных"
+                    },
+                    "500": {
+                        "description": "Ошибка при обновлении"
+                    }
+                }
+            }
+        },
+        "/api/integrations/available": {
+            "get": {
+                "tags": [
+                    "Integrations"
+                ],
+                "summary": "Получение списка доступных интеграций",
+                "operationId": "71b1305a4e5b2211aeabc701f08c5e3d",
+                "responses": {
+                    "200": {
+                        "description": "Успешное получение данных"
+                    }
+                }
+            }
+        },
+        "/api/integrations/telegram/link": {
+            "get": {
+                "tags": [
+                    "Integrations",
+                    "Telegram"
+                ],
+                "summary": "Получение ссылки для подключения Telegram",
+                "operationId": "f329e72967ae85b3124b03591dde0c51",
+                "responses": {
+                    "200": {
+                        "description": "Успешное получение ссылки"
+                    }
+                }
+            }
+        },
+        "/api/integrations/telegram/updates": {
+            "post": {
+                "tags": [
+                    "Integrations",
+                    "Telegram"
+                ],
+                "summary": "Настройка обновлений Telegram",
+                "operationId": "594becb6ea4a49c98b17f2f2a242ec2d",
+                "responses": {
+                    "200": {
+                        "description": "Успешная настройка"
+                    }
+                }
+            }
+        },
+        "/api/integrations/zapier/me": {
+            "get": {
+                "tags": [
+                    "Integrations",
+                    "Zapier"
+                ],
+                "summary": "Получение информации о текущем пользователе Zapier",
+                "operationId": "30396c7cac00c9d912ce203d8c792925",
+                "responses": {
+                    "200": {
+                        "description": "Успешное получение данных"
+                    }
+                }
+            }
+        },
+        "/api/integrations/zapier/subscribe": {
+            "post": {
+                "tags": [
+                    "Integrations",
+                    "Zapier"
+                ],
+                "summary": "Подписка на Zapier",
+                "operationId": "781766b8ae14a6117284e470839af8bf",
+                "responses": {
+                    "200": {
+                        "description": "Успешная подписка"
+                    }
+                }
+            }
+        },
+        "/api/integrations/zapier/unsubscribe": {
+            "delete": {
+                "tags": [
+                    "Integrations",
+                    "Zapier"
+                ],
+                "summary": "Отписка от Zapier",
+                "operationId": "bc523245b66e9fd108b21cb21e817835",
+                "responses": {
+                    "200": {
+                        "description": "Успешная отписка"
+                    }
+                }
+            }
+        },
+        "/api/integrations/zapier/index": {
+            "get": {
+                "tags": [
+                    "Integrations",
+                    "Zapier"
+                ],
+                "summary": "Получение списка данных для Zapier",
+                "operationId": "55201471e249c6e403cc93ed914978dc",
+                "responses": {
+                    "200": {
+                        "description": "Успешное получение данных"
+                    }
+                }
+            }
+        },
+        "/api/integrations/zapier/apikey": {
+            "get": {
+                "tags": [
+                    "Integrations",
+                    "Zapier"
+                ],
+                "summary": "Генерация API ключа для Zapier",
+                "operationId": "35917bb54c087937ffe3b0f0acafc130",
+                "responses": {
+                    "200": {
+                        "description": "Успешная генерация ключа"
+                    }
+                }
+            }
+        },
+        "/api/settings/email/template": {
+            "get": {
+                "tags": [
+                    "Settings",
+                    "Email Templates"
+                ],
+                "summary": "Получение шаблона email по ID",
+                "operationId": "e564971dce408e91ef9c8460645a361f",
+                "responses": {
+                    "200": {
+                        "description": "Успешное получение данных"
+                    },
+                    "500": {
+                        "description": "Внутренняя ошибка сервера"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Settings",
+                    "Email Templates"
+                ],
+                "summary": "Создание нового шаблона email",
+                "operationId": "6efb0d474637155179014458192f87d6",
+                "responses": {
+                    "200": {
+                        "description": "Успешное создание шаблона"
+                    },
+                    "400": {
+                        "description": "Ошибка валидации"
+                    },
+                    "500": {
+                        "description": "Внутренняя ошибка сервера"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Settings",
+                    "Email Templates"
+                ],
+                "summary": "Удаление шаблонов email",
+                "operationId": "63b1b6e5a3f3d03ce95edfa9b4c4778c",
+                "responses": {
+                    "200": {
+                        "description": "Успешное удаление"
+                    },
+                    "500": {
+                        "description": "Ошибка при удалении"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Settings",
+                    "Email Templates"
+                ],
+                "summary": "Обновление шаблона email",
+                "operationId": "e944a0b74c428ff2f45f5d6ebd407dae",
+                "responses": {
+                    "200": {
+                        "description": "Успешное обновление данных"
+                    },
+                    "404": {
+                        "description": "Шаблон не найден"
+                    },
+                    "500": {
+                        "description": "Ошибка при обновлении"
+                    }
+                }
+            }
+        },
+        "/api/test": {
+            "get": {
+                "tags": [
+                    "Settings",
+                    "Maintenance"
+                ],
+                "summary": "Тестовый эндпоинт для обслуживания",
+                "operationId": "1c0fe980f31784d133e82d3e211449df",
+                "responses": {
+                    "200": {
+                        "description": "Успешный ответ"
+                    }
+                }
+            }
+        },
+        "/api/settings/oauth": {
+            "get": {
+                "tags": [
+                    "Settings",
+                    "OAuth"
+                ],
+                "summary": "Получение OAuth настроек",
+                "operationId": "4bda360878868feff32203a1622ffacc",
+                "responses": {
+                    "200": {
+                        "description": "Успешное получение данных"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Settings",
+                    "OAuth"
+                ],
+                "summary": "Создание OAuth настроек",
+                "operationId": "4fb254e81d40a768d80ea47ac38f8594",
+                "responses": {
+                    "200": {
+                        "description": "Успешное создание"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Settings",
+                    "OAuth"
+                ],
+                "summary": "Удаление OAuth настроек",
+                "operationId": "aa09db290a56412ed2e92abb997b4f88",
+                "responses": {
+                    "200": {
+                        "description": "Успешное удаление"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Settings",
+                    "OAuth"
+                ],
+                "summary": "Обновление OAuth настроек",
+                "operationId": "fc83232554f2aa8b99ca5b270752c036",
+                "responses": {
+                    "200": {
+                        "description": "Успешное обновление"
+                    }
+                }
+            }
+        },
+        "/api/settings/oauth/list": {
+            "get": {
+                "tags": [
+                    "Settings",
+                    "OAuth"
+                ],
+                "summary": "Получение списка OAuth настроек",
+                "operationId": "7fa0cadeddbdf70eeec365c1afdfc7ba",
+                "responses": {
+                    "200": {
+                        "description": "Успешное получение данных"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Export",
+            "description": "Export"
+        },
+        {
+            "name": "Integrations",
+            "description": "Integrations"
+        },
+        {
+            "name": "AmoCRM",
+            "description": "AmoCRM"
+        },
+        {
+            "name": "Telegram",
+            "description": "Telegram"
+        },
+        {
+            "name": "Zapier",
+            "description": "Zapier"
+        },
+        {
+            "name": "Settings",
+            "description": "Settings"
+        },
+        {
+            "name": "Email Templates",
+            "description": "Email Templates"
+        },
+        {
+            "name": "Maintenance",
+            "description": "Maintenance"
+        },
+        {
+            "name": "OAuth",
+            "description": "OAuth"
+        }
+    ]
+}
